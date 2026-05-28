@@ -2,14 +2,15 @@ import { createFileRoute } from "@tanstack/solid-router"
 import { usePagination } from "alova/client"
 
 import { alova } from "@/api"
+import type { Member } from "@/api/types/member.ts"
 
 export const Route = createFileRoute("/contact/")({
 	component: RouteComponent,
 })
 
 function RouteComponent() {
-	const { data } = usePagination((page, pageSize) =>
-		alova.Get("/members", {
+	const { data, loading } = usePagination((page, pageSize) =>
+		alova.Get<PaginationResp<Member>>("/members", {
 			params: {
 				page,
 				pageSize,
