@@ -6,7 +6,7 @@
     --shadow-base: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
-@layer base{
+@layer base {
     * {
         scrollbar-width: thin;
         scrollbar-color: transparent transparent;
@@ -24,7 +24,7 @@
 
 @layer components {
     .switch {
-        @apply  relative inline-block w-11 h-6;
+        @apply relative inline-block w-11 h-6;
 
         input {
             opacity: 0;
@@ -98,6 +98,10 @@
         }
     }
 
+    .border-3 {
+        border-width: 3px;
+    }
+
     .btn {
         @apply transition-all text-xs font-semibold cursor-pointer py-2 px-4 rounded-3xl inline-flex items-center gap-2;
 
@@ -118,10 +122,166 @@
         }
 
         &.btn-large {
-            @apply  py-3 px-6 text-sm;
+            @apply py-3 px-6 text-sm;
             &>svg {
                 @apply text-xl;
             }
         }
     }
+
+    .input {
+        @apply w-full border rounded-xl transition-all duration-200 placeholder:text-zinc-400;
+        @apply focus:outline-none focus:ring-4;
+        @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-zinc-50;
+        @apply read-only:cursor-default read-only:bg-zinc-50;
+        @apply px-4 py-2 text-sm;
+        @apply bg-white border-zinc-200 focus:border-primary focus:ring-primary/20 focus:bg-white;
+
+        // Size variants
+        &.input_sm {
+            @apply px-3 py-1.5 text-sm;
+        }
+
+        &.input_md {
+            @apply px-4 py-2 text-sm;
+        }
+
+        &.input_lg {
+            @apply px-4 py-3 text-base;
+        }
+
+        // Shape variants
+        &.input-rounded {
+            @apply rounded-full;
+        }
+
+        &.input_square {
+            @apply rounded-lg;
+        }
+
+        // Variant styles
+        &.input_default {
+            @apply bg-white border-zinc-200 focus:border-primary focus:ring-primary/20 focus:bg-white;
+        }
+
+        &.input_filled {
+            @apply bg-zinc-50 border-transparent focus:bg-white focus:border-primary focus:ring-primary/20;
+        }
+
+        &.input_outlined {
+            @apply bg-transparent border-zinc-300 focus:border-primary focus:ring-primary/20 focus:bg-transparent;
+        }
+
+        // State styles
+        &.input_error {
+            @apply border-red-500 focus:border-red-500 focus:ring-red-500/20;
+        }
+
+        &.input_success {
+            @apply border-green-500 focus:border-green-500 focus:ring-green-500/20;
+        }
+
+        &.input_with_left_icon {
+            @apply pl-10;
+        }
+
+        &.input_with_left_icon_sm {
+            @apply pl-9;
+        }
+
+        &.input_with_left_icon_lg {
+            @apply pl-11;
+        }
+
+        &.input_with_right_icon {
+            @apply pr-10;
+        }
+
+        &.input_with_right_icon_sm {
+            @apply pr-9;
+        }
+
+        &.input_with_right_icon_lg {
+            @apply pr-11;
+        }
+    }
+
+    .input_wrapper {
+        @apply relative flex gap-1;
+    }
+
+    .input_icon {
+        @apply absolute top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none;
+        @apply left-3 size-5;
+
+        &.input_icon_left {
+            @apply left-3;
+        }
+
+        &.input_icon_right {
+            @apply right-3;
+            @apply cursor-pointer hover:text-zinc-600 transition-colors;
+        }
+
+        &.input_icon_sm {
+            @apply size-4;
+        }
+
+        &.input_icon_md {
+            @apply size-5;
+        }
+
+        &.input_icon_lg {
+            @apply size-5;
+        }
+    }
+
+    .input_label {
+        @apply font-medium text-zinc-700 text-sm block mb-1.5;
+
+        &.input_label_required {
+            @apply after:content-['*'] after:ml-0.5 after:text-red-500;
+        }
+
+        &.input_label_sm {
+            @apply text-xs;
+        }
+
+        &.input_label_md {
+            @apply text-sm;
+        }
+
+        &.input_label_lg {
+            @apply text-base;
+        }
+    }
+
+    .input_description {
+        @apply flex items-start gap-1.5 text-sm text-zinc-500 mt-1.5;
+
+        &.input_description_sm {
+            @apply text-xs;
+        }
+
+        &.input_description_md {
+            @apply text-sm;
+        }
+
+        &.input_description_lg {
+            @apply text-base;
+        }
+
+        &.input_description_error {
+            @apply text-red-500;
+        }
+
+        &.input_description_success {
+            @apply text-green-500;
+        }
+    }
+
+    .input_group {
+        @apply flex flex-col;
+    }
+
 }

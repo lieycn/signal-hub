@@ -1,15 +1,37 @@
 # Input Component
 
-A flexible input component built with Tailwind CSS and SolidJS.
+A flexible input component built with Tailwind CSS and SolidJS, using CSS component classes for better maintainability and consistency.
 
 ## Features
 
 - ✨ Multiple size options (sm, md, lg)
 - 🎨 Three variants (default, filled, outlined)
+- 🔷 Shape options (default, rounded, square)
+- 🎯 Enhanced icon support (left, right, clickable)
 - ✔️ Built-in validation states (error, success)
-- 🎯 Support for icons (left, right)
 - ♿ Accessible (labels, ARIA attributes)
 - 🔒 Full keyboard support
+- 🎨 Tailwind CSS component classes for consistent styling
+
+## Architecture
+
+The component uses Tailwind CSS component classes defined in `style.css` following the button component pattern:
+
+```css
+/* Component classes in style.css */
+.input              { /* Base input styles */ }
+.input_sm           { /* Small size modifier */ }
+.input_lg           { /* Large size modifier */ }
+.input_default      { /* Default variant */ }
+.input_filled       { /* Filled variant */ }
+.input_outlined     { /* Outlined variant */ }
+.input_rounded      { /* Rounded shape */ }
+.input_square       { /* Square shape */ }
+.input_error        { /* Error state */ }
+.input_success      { /* Success state */ }
+.input_icon_left    { /* Left icon positioning */ }
+.input_icon_right   { /* Right icon positioning */ }
+```
 
 ## Usage
 
@@ -59,33 +81,123 @@ const [error, setError] = createSignal("")
 ### With Icons
 
 ```tsx
+// Left icon only
 <Input
   label="搜索"
   type="search"
   placeholder="搜索内容..."
   leftIcon={<SearchIcon />}
-  rightIcon={<CloseIcon />}
+/>
+
+// Right clickable icon
+<Input
+  label="密码"
+  type="password"
+  placeholder="请输入密码"
+  rightIcon={<EyeIcon />}
   rightIconClickable
+  onRightIconClick={() => setShowPassword(!showPassword())}
+/>
+
+// Both icons
+<Input
+  label="用户名"
+  placeholder="请输入用户名"
+  leftIcon={<UserIcon />}
+  rightIcon={<CloseIcon />}
+  rightIconClickable={!!value()}
   onRightIconClick={() => setValue("")}
 />
 ```
 
-### Password Input with Toggle
+### With Shape
 
 ```tsx
-const [showPassword, setShowPassword] = createSignal(false)
-
+// Fully rounded
 <Input
-  type={showPassword() ? "text" : "password"}
-  label="密码"
-  placeholder="••••••••"
-  rightIcon={
-    showPassword() ? <EyeOffIcon /> : <EyeIcon />
-  }
-  rightIconClickable
-  onRightIconClick={() => setShowPassword(!showPassword())}
+  label="圆形输入框"
+  shape="rounded"
+  placeholder="Pill-shaped input"
+/>
+
+// Square corners
+<Input
+  label="方形输入框"
+  shape="square"
+  placeholder="Square corners"
 />
 ```
+
+### With Size and Variant
+
+```tsx
+<Input
+  size="sm"
+  variant="filled"
+  label="小尺寸填充风格"
+  placeholder="Small filled input"
+/>
+
+<Input
+  size="lg"
+  variant="outlined"
+  shape="rounded"
+  label="大尺寸轮廓圆形"
+  placeholder="Large outlined rounded"
+/>
+```
+
+## CSS Component Classes
+
+The component uses the following CSS classes defined in `style.css`:
+
+### Base Classes
+
+| Class | Description |
+|-------|-------------|
+| `.input` | Base input styles with default sizing and spacing |
+| `.input_wrapper` | Wrapper for positioning icons |
+| `.input_icon` | Base icon positioning |
+| `.input_label` | Label styling with required indicator |
+| `.input_description` | Helper text below input |
+| `.input_group` | Container for label + input + description |
+
+### Size Modifiers
+
+| Class | Size |
+|-------|------|
+| `.input_sm` | Small input (reduced padding) |
+| `.input_md` | Medium input (default) |
+| `.input_lg` | Large input (increased padding) |
+
+### Shape Modifiers
+
+| Class | Shape |
+|-------|-------|
+| *(default)* | Rounded corners (default) |
+| `.input_rounded` | Fully rounded/pill shape |
+| `.input_square` | Square corners |
+
+### Variant Modifiers
+
+| Class | Style |
+|-------|-------|
+| `.input_default` | White background with subtle border |
+| `.input_filled` | Gray filled background |
+| `.input_outlined` | Transparent with outlined border |
+
+### State Modifiers
+
+| Class | State |
+|-------|-------|
+| `.input_error` | Error state (red border) |
+| `.input_success` | Success state (green border) |
+| `.input_with_left_icon` | Adjust padding for left icon |
+| `.input_with_left_icon_sm` | Small left icon padding |
+| `.input_with_left_icon_lg` | Large left icon padding |
+| `.input_with_right_icon` | Adjust padding for right icon |
+| `.input_with_right_icon_sm` | Small right icon padding |
+| `.input_with_right_icon_lg` | Large right icon padding |
 
 ## Props
 
@@ -109,6 +221,7 @@ const [showPassword, setShowPassword] = createSignal(false)
 | `onRightIconClick`    | `() => void`                                      | -             | Right icon click handler           |
 | `size`                | `"sm" \| "md" \| "lg"`                            | `"md"`        | Input size                         |
 | `variant`             | `"default" \| "filled" \| "outlined"`             | `"default"`   | Visual style                       |
+| `shape`               | `"default" \| "rounded" \| "square"`              | `"default"`   | Input shape                        |
 | `class`               | `string`                                          | -             | Additional CSS classes             |
 | `name`                | `string`                                          | -             | Form field name                    |
 | `id`                  | `string`                                          | auto-generated | Input ID (for label)              |
@@ -120,19 +233,27 @@ const [showPassword, setShowPassword] = createSignal(false)
 
 ## Size Options
 
-| Size  | Input Padding | Text Size | Label Size | Icon Size |
-| ----- | ------------- | --------- | ---------- | --------- |
-| `sm`  | `px-3 py-1.5`  | `text-sm` | `text-xs`  | `size-4`  |
-| `md`  | `px-4 py-2`    | `text-sm` | `text-sm`  | `size-5`  |
-| `lg`  | `px-4 py-3`    | `text-base`| `text-base`| `size-5`|
+| Size  | Input Class | Text Size | Label Class | Icon Class |
+| ----- | ----------- | --------- | ----------- | ---------- |
+| `sm`  | `.input_sm` | `text-sm` | `.input_label_sm` | `.input_icon_sm` |
+| `md`  | `.input_md` | `text-sm` | `.input_label_md` | `.input_icon_md` |
+| `lg`  | `.input_lg` | `text-base`| `.input_label_lg` | `.input_icon_lg`|
+
+## Shape Options
+
+| Shape | Class | Border Radius |
+|-------|-------|--------------|
+| `default` | *(base)* | `rounded-xl` (12px) |
+| `rounded` | `.input_rounded` | `rounded-full` (pill) |
+| `square` | `.input_square` | `rounded-lg` (8px) |
 
 ## Variant Styles
 
-| Variant   | Background | Border        | Focus Background |
-| --------- | ---------- | ------------- | --------------- |
-| `default` | White      | `zinc-200`    | White           |
-| `filled`  | `zinc-50`  | Transparent  | White           |
-| `outlined`| Transparent| `zinc-300`    | Transparent    |
+| Variant   | CSS Class | Background | Border | Focus Background |
+| --------- | --------- | ---------- | ------ | --------------- |
+| `default` | `.input_default` | White | `zinc-200` | White |
+| `filled`  | `.input_filled` | `zinc-50` | Transparent | White |
+| `outlined`| `.input_outlined`| Transparent| `zinc-300` | Transparent |
 
 ## Validation States
 
@@ -142,6 +263,7 @@ const [showPassword, setShowPassword] = createSignal(false)
 <Input
   label="邮箱"
   error="邮箱格式不正确"
+  // Applies .input_error class
   // Shows red border and error icon
 />
 ```
@@ -152,13 +274,14 @@ const [showPassword, setShowPassword] = createSignal(false)
 <Input
   label="用户名"
   success="用户名可用"
+  // Applies .input_success class
   // Shows green border and success icon
 />
 ```
 
 ## Examples
 
-### Search Input
+### Search Input with Icon
 
 ```tsx
 <Input
@@ -169,7 +292,52 @@ const [showPassword, setShowPassword] = createSignal(false)
 />
 ```
 
-### Number Input
+### Password Input with Toggle
+
+```tsx
+const [showPassword, setShowPassword] = createSignal(false)
+
+<Input
+  type={showPassword() ? "text" : "password"}
+  label="密码"
+  placeholder="••••••••"
+  rightIcon={showPassword() ? <EyeOffIcon /> : <EyeIcon />}
+  rightIconClickable
+  onRightIconClick={() => setShowPassword(!showPassword())}
+/>
+```
+
+### Username with Clear Button
+
+```tsx
+const [username, setUsername] = createSignal("")
+
+<Input
+  label="用户名"
+  placeholder="请输入用户名"
+  value={username()}
+  onInput={setUsername}
+  leftIcon={<UserIcon />}
+  rightIcon={<CloseIcon />}
+  rightIconClickable={!!username()}
+  onRightIconClick={() => setUsername("")}
+/>
+```
+
+### URL Input with Enhanced Styling
+
+```tsx
+<Input
+  type="url"
+  label="网址"
+  placeholder="https://example.com"
+  variant="outlined"
+  shape="rounded"
+  leftIcon={<GlobeIcon />}
+/>
+```
+
+### Number Input with Constraints
 
 ```tsx
 <Input
@@ -179,6 +347,7 @@ const [showPassword, setShowPassword] = createSignal(false)
   min={0}
   max={100}
   step={1}
+  size="lg"
 />
 ```
 
@@ -203,3 +372,51 @@ const [showPassword, setShowPassword] = createSignal(false)
   description="用户名不可修改"
 />
 ```
+
+## Icon System
+
+The component provides flexible icon support:
+
+### Left Icons
+- Automatically positioned with proper spacing
+- Size-adjusted based on input size
+- Non-interactive (pointer events disabled)
+
+### Right Icons
+- Positioned with proper spacing
+- Can be made clickable with `rightIconClickable`
+- Includes hover states
+- Often used for actions (clear, toggle visibility, etc.)
+
+### Icon Size Adjustment
+Icons automatically scale based on input size:
+- Small inputs: 16px icons
+- Medium inputs: 20px icons
+- Large inputs: 20px icons
+
+## Migration from Inline Classes
+
+If you're migrating from the previous inline class approach:
+
+**Before:**
+```tsx
+class="w-full border rounded-xl px-4 py-2 text-sm bg-white border-zinc-200"
+```
+
+**After:**
+```tsx
+// Uses predefined CSS component class
+class="input input_md"
+```
+
+The component automatically applies the appropriate CSS classes based on props, reducing the need for inline Tailwind classes and ensuring consistency across your application.
+
+## Design System Integration
+
+The input component follows the same design patterns as other components:
+
+- **Color System**: Uses `primary`, `zinc-*`, `red-500`, `green-500` from your theme
+- **Spacing**: Consistent with button and other form components
+- **Typography**: Scales with size modifiers
+- **States**: Follows accessibility guidelines for focus, error, success states
+- **Responsive**: Works with mobile and desktop layouts

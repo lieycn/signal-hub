@@ -8,12 +8,13 @@ import (
 	"github.com/dromara/carbon/v2"
 	ge "github.com/enetx/g"
 	"github.com/enetx/surf"
-	"github.com/gogf/gf/v2/container/gmap"
+	"github.com/gogf/gf/v2/container/gset"
 	"github.com/lieywe/msghub/internal/constants"
 	"github.com/lieywe/msghub/internal/model"
 	"github.com/lieywe/msghub/internal/model/g"
 	"github.com/spf13/cast"
 	"github.com/xframe-go/x/x"
+	"golang.org/x/sync/errgroup"
 	"gorm.io/gorm/clause"
 )
 
@@ -92,6 +93,18 @@ func (v V2ex) Connect(ctx context.Context, config *model.PlatformConfig) (*model
 		return nil, err
 	}
 
+	member := model.Member{
+		AccountID:        acc.ID,
+		Platform:         constants.PlatformV2ex,
+		PlatformMemberId: cast.ToString(result.Result.Id),
+		Name:             result.Result.Username,
+		Avatar:           result.Result.AvatarNormal,
+	}
+	err = x.Model[model.Member]().Create(ctx, &member)
+	if err != nil {
+		return nil, err
+	}
+
 	return &acc, nil
 }
 
@@ -137,42 +150,61 @@ func (v V2ex) SyncMessage(ctx context.Context, account *model.Account) ([]model.
 		return nil, err
 	}
 
-	members := gmap.NewKVMap[string, model.Member]()
+	// Collect unique member IDs from messages
+	memberNames := gset.NewTSet[string]()
 	for _, res := range result.Result {
-		platformMemberId := cast.ToString(res.MemberId)
-		members.Set(cast.ToString(res.MemberId), model.Member{
-			Platform:         constants.PlatformV2ex,
-			PlatformMemberId: platformMemberId,
-			Name:             res.Member.Username,
-			AccountID:        account.ID,
-		})
+		memberNames.Add(res.Member.Username)
 	}
 
-	mem := members.Values()
-
-	err = x.DB().Clauses(clause.OnConflict{
-		DoNothing: true,
-		DoUpdates: clause.AssignmentColumns([]string{"name"}),
-	}).CreateInBatches(&mem, 100).Error
-	if err != nil {
-		return nil, err
+	var existingMembers []model.Member
+	if memberNames.Size() > 0 {
+		existingMembers, err = x.Model[model.Member]().Where(
+			g.Member.AccountID.Eq(account.ID),
+			g.Member.Name.In(memberNames.Slice()...),
+		).Find(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, member := range existingMembers {
+			memberNames.Remove(member.Name)
+		}
 	}
 
-	memberMap := gmap.NewKVMap[string, model.Member]()
-	for _, m := range mem {
-		memberMap.Set(m.PlatformMemberId, m)
+	if memberNames.Size() > 0 {
+		members, err := v.SyncMembers(ctx, account, memberNames.Slice()...)
+		if err != nil {
+			return nil, err
+		}
+		existingMembers = append(existingMembers, members...)
 	}
 
+	memberIDMap := make(map[string]model.Member)
+	for _, member := range existingMembers {
+		memberIDMap[member.PlatformMemberId] = member
+	}
+
+	// Create messages with proper member references
 	msgs := make([]model.Message, 0, len(result.Result))
 	for _, res := range result.Result {
 		title, err := CompleteRelativeURLs(res.Text, v.baseUrl)
 		if err != nil {
 			return nil, err
 		}
-		content, err := CompleteRelativeURLs(res.PayloadRendered, v.baseUrl)
-		if err != nil {
-			return nil, err
+
+		content := ""
+		if len(res.Payload) > 0 {
+			content, err = CompleteRelativeURLs(res.PayloadRendered, v.baseUrl)
+			if err != nil {
+				return nil, err
+			}
 		}
+
+		fromMember, exists := memberIDMap[cast.ToString(res.MemberId)]
+		if !exists {
+			// Skip message if member doesn't exist
+			continue
+		}
+
 		msgs = append(msgs, model.Message{
 			AccountID:    account.ID,
 			Platform:     constants.PlatformV2ex,
@@ -180,23 +212,81 @@ func (v V2ex) SyncMessage(ctx context.Context, account *model.Account) ([]model.
 			Title:        title,
 			Content:      content,
 			SendAt:       carbon.CreateFromTimestamp(res.Created),
-			FromMemberId: memberMap.Get(cast.ToString(res.MemberId)).ID,
+			FromMemberId: fromMember.ID,
 		})
 	}
 
-	err = x.DB().WithContext(ctx).Clauses(clause.OnConflict{
-		DoNothing: true,
-	}).CreateInBatches(&msgs, 20).Error
-	if err != nil {
-		return nil, err
+	// Batch insert messages
+	if len(msgs) > 0 {
+		err = x.DB().WithContext(ctx).Clauses(clause.OnConflict{
+			DoNothing: true,
+		}).CreateInBatches(&msgs, 20).Error
+		if err != nil {
+			return nil, err
+		}
 	}
 
+	// Update last sync time
 	_, err = x.Model[model.Account]().Where(g.Account.ID.Eq(account.ID)).Set(g.Account.LastSyncAt.Set(carbon.Now())).Update(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	return msgs, nil
+}
+
+func (v V2ex) SyncMembers(ctx context.Context, account *model.Account, usernames ...string) ([]model.Member, error) {
+	errs := errgroup.Group{}
+	members := make([]model.Member, 0, len(usernames))
+	for _, username := range usernames {
+		errs.Go(func() error {
+			info, err := v.syncMemberInfo(ctx, account, username)
+			if err != nil {
+				return err
+			}
+			members = append(members, *info)
+			return nil
+		})
+	}
+
+	if err := errs.Wait(); err != nil {
+		return nil, err
+	}
+
+	err := x.DB().WithContext(ctx).Clauses(clause.OnConflict{
+		DoNothing: true,
+	}).CreateInBatches(&members, 20).Error
+	return members, err
+}
+
+// syncMemberInfo syncs member info by member ID
+func (v V2ex) syncMemberInfo(ctx context.Context, account *model.Account, name string) (*model.Member, error) {
+	if account.Config.V2ex == nil {
+		return nil, ErrInvalidPlatformConfig
+	}
+
+	client := surf.NewClient().Builder().WithContext(ctx).
+		BearerAuth(ge.String(account.Config.V2ex.PersonalAccessToken)).
+		Impersonate().Chrome().
+		Build().Unwrap()
+
+	resp := client.Get(ge.String(fmt.Sprintf("%s/api/members/show.json?username=%s", v.baseUrl, name))).Do()
+	if !resp.IsOk() {
+		return nil, resp.Err()
+	}
+
+	var info PlatformMemberInfo
+	if err := resp.Ok().Body.JSON(&info); err != nil {
+		return nil, err
+	}
+
+	return &model.Member{
+		AccountID:        account.ID,
+		Platform:         constants.PlatformV2ex,
+		PlatformMemberId: cast.ToString(info.Id),
+		Name:             info.Username,
+		Avatar:           info.AvatarNormal,
+	}, nil
 }
 
 type PlatformMemberInfo struct {
@@ -221,33 +311,4 @@ type PlatformMemberInfo struct {
 	LastModified   int    `json:"last_modified"`
 	Pro            int    `json:"pro"`
 	Status         string `json:"status"`
-}
-
-func (v V2ex) syncMemberInfo(ctx context.Context, account *model.Account, memberName string) (*model.Member, error) {
-	if account.Config.V2ex == nil {
-		return nil, ErrInvalidPlatformConfig
-	}
-
-	client := surf.NewClient().Builder().WithContext(ctx).
-		BearerAuth(ge.String(account.Config.V2ex.PersonalAccessToken)).
-		Impersonate().Chrome().
-		Build().Unwrap()
-
-	resp := client.Get(ge.String(fmt.Sprintf("%s/api/members/show.json?username=%s", v.baseUrl, memberName))).Do()
-	if !resp.IsOk() {
-		return nil, resp.Err()
-	}
-
-	var info PlatformMemberInfo
-	if err := resp.Ok().Body.JSON(&info); err != nil {
-		return nil, err
-	}
-
-	return &model.Member{
-		AccountID:        account.ID,
-		Platform:         constants.PlatformV2ex,
-		PlatformMemberId: cast.ToString(info.Id),
-		Name:             info.Username,
-		Avatar:           info.AvatarNormal,
-	}, nil
 }

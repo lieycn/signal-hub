@@ -21,6 +21,7 @@ export interface InputProps {
 	onRightIconClick?: () => void
 	size?: "sm" | "md" | "lg"
 	variant?: "default" | "filled" | "outlined"
+	shape?: "default" | "rounded" | "square"
 	class?: string
 	ref?: (element: HTMLInputElement) => void
 	name?: string
@@ -33,33 +34,40 @@ export interface InputProps {
 	pattern?: string
 }
 
-const sizeClasses = {
-	sm: {
-		input: "px-3 py-1.5 text-sm",
-		label: "text-xs",
-		description: "text-xs",
-		icon: "size-4",
-	},
-	md: {
-		input: "px-4 py-2 text-sm",
-		label: "text-sm",
-		description: "text-sm",
-		icon: "size-5",
-	},
-	lg: {
-		input: "px-4 py-3 text-base",
-		label: "text-base",
-		description: "text-base",
-		icon: "size-5",
-	},
+const sizeModifiers = {
+	sm: "input_sm",
+	md: "input_md",
+	lg: "input_lg",
 }
 
-const variantClasses = {
-	default:
-		"bg-white border-zinc-200 focus:border-primary focus:ring-primary/20 focus:bg-white",
-	filled: "bg-zinc-50 border-transparent focus:bg-white focus:border-primary focus:ring-primary/20",
-	outlined:
-		"bg-transparent border-zinc-300 focus:border-primary focus:ring-primary/20 focus:bg-transparent",
+const variantModifiers = {
+	default: "input_default",
+	filled: "input_filled",
+	outlined: "input_outlined",
+}
+
+const shapeModifiers = {
+	default: "",
+	rounded: "input_rounded",
+	square: "input_square",
+}
+
+const labelSizeModifiers = {
+	sm: "input_label_sm",
+	md: "input_label_md",
+	lg: "input_label_lg",
+}
+
+const iconSizeModifiers = {
+	sm: "input_icon_sm",
+	md: "input_icon_md",
+	lg: "input_icon_lg",
+}
+
+const descriptionSizeModifiers = {
+	sm: "input_description_sm",
+	md: "input_description_md",
+	lg: "input_description_lg",
 }
 
 export function Input(props: InputProps) {
@@ -67,6 +75,7 @@ export function Input(props: InputProps) {
 
 	const size = () => props.size || "md"
 	const variant = () => props.variant || "default"
+	const shape = () => props.shape || "default"
 
 	const hasError = () => !!props.error
 	const hasSuccess = () => !!props.success && !hasError()
@@ -81,34 +90,62 @@ export function Input(props: InputProps) {
 		props.onChange?.(value)
 	}
 
+	const getInputClasses = () => {
+		return cn(
+			"input",
+			sizeModifiers[size()],
+			variantModifiers[variant()],
+			shapeModifiers[shape()],
+			props.leftIcon && size() === "sm" && "input_with_left_icon_sm",
+			props.leftIcon && size() === "md" && "input_with_left_icon",
+			props.leftIcon && size() === "lg" && "input_with_left_icon_lg",
+			(props.rightIcon || props.rightIconClickable) && size() === "sm" && "input_with_right_icon_sm",
+			(props.rightIcon || props.rightIconClickable) && size() === "md" && "input_with_right_icon",
+			(props.rightIcon || props.rightIconClickable) && size() === "lg" && "input_with_right_icon_lg",
+			hasError() && "input_error",
+			hasSuccess() && "input_success",
+		)
+	}
+
+	const getLabelClasses = () => {
+		return cn(
+			"input_label",
+			props.required && "input_label_required",
+			labelSizeModifiers[size()],
+		)
+	}
+
+	const getIconClasses = (position: "left" | "right") => {
+		return cn(
+			"input_icon",
+			position === "left" ? "input_icon_left" : "input_icon_right",
+			iconSizeModifiers[size()],
+		)
+	}
+
+	const getDescriptionClasses = () => {
+		return cn(
+			"input_description",
+			descriptionSizeModifiers[size()],
+			hasError() && "input_description_error",
+			hasSuccess() && "input_description_success",
+		)
+	}
+
 	return (
-		<div class={cn("flex flex-col gap-1.5", props.class)}>
+		<div class={cn("input_group", props.class)}>
 			{/* Label */}
 			<Show when={props.label}>
-				<label
-					for={inputId()}
-					class={cn(
-						"font-medium text-zinc-700",
-						sizeClasses[size()].label,
-						props.required && "after:content-['*'] after:ml-0.5 after:text-red-500"
-					)}
-				>
+				<label for={inputId()} class={getLabelClasses()}>
 					{props.label}
 				</label>
 			</Show>
 
 			{/* Input Wrapper */}
-			<div class="relative">
+			<div class="input_wrapper">
 				{/* Left Icon */}
 				<Show when={props.leftIcon}>
-					<div
-						class={cn(
-							"absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none",
-							sizeClasses[size()].icon
-						)}
-					>
-						{props.leftIcon}
-					</div>
+					<div class={getIconClasses("left")}>{props.leftIcon}</div>
 				</Show>
 
 				{/* Input */}
@@ -130,28 +167,14 @@ export function Input(props: InputProps) {
 					max={props.max}
 					step={props.step}
 					pattern={props.pattern}
-					class={cn(
-						"flex-1 w-full border rounded-xl transition-all duration-200 placeholder:text-zinc-400",
-						"focus:outline-none focus:ring-4",
-						"disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-zinc-50",
-						"readonly:cursor-default readonly:bg-zinc-50",
-						sizeClasses[size()].input,
-						props.leftIcon && "pl-10",
-						(props.rightIcon || props.rightIconClickable) && "pr-10",
-						hasError() && "border-red-500 focus:border-red-500 focus:ring-red-500/20",
-						hasSuccess() && "border-green-500 focus:border-green-500 focus:ring-green-500/20",
-						variantClasses[variant()]
-					)}
+					class={getInputClasses()}
 				/>
 
 				{/* Right Icon */}
 				<Show when={props.rightIcon || props.rightIconClickable}>
 					<div
-						class={cn(
-							"absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400",
-							sizeClasses[size()].icon,
-							props.rightIconClickable && "cursor-pointer hover:text-zinc-600 transition-colors"
-						)}
+						class={getIconClasses("right")}
+						classList={{ "cursor-pointer": props.rightIconClickable }}
 						onClick={props.onRightIconClick}
 					>
 						{props.rightIcon}
@@ -161,7 +184,7 @@ export function Input(props: InputProps) {
 
 			{/* Description / Error / Success */}
 			<Show when={props.description || props.error || props.success}>
-				<div class={cn("flex items-start gap-1.5", sizeClasses[size()].description)}>
+				<div class={getDescriptionClasses()}>
 					{/* Icon */}
 					<Show when={props.error || props.success}>
 						<svg
@@ -172,9 +195,9 @@ export function Input(props: InputProps) {
 							stroke="currentColor"
 							stroke-width="2"
 							class={cn(
-								"mt-0.5 shrink-0",
+								"shrink-0",
 								hasError() && "text-red-500",
-								hasSuccess() && "text-green-500"
+								hasSuccess() && "text-green-500",
 							)}
 						>
 							<Show when={hasError()}>
@@ -189,15 +212,7 @@ export function Input(props: InputProps) {
 					</Show>
 
 					{/* Text */}
-					<span
-						class={cn(
-							hasError() && "text-red-500",
-							hasSuccess() && "text-green-500",
-							!hasError() && !hasSuccess() && "text-zinc-500"
-						)}
-					>
-						{props.error || props.success || props.description}
-					</span>
+					<span>{props.error || props.success || props.description}</span>
 				</div>
 			</Show>
 		</div>

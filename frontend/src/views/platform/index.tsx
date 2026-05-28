@@ -77,7 +77,12 @@ function RouteComponent() {
 				</button>
 			</header>
 
-			<Modal open={open()} title={"添加新平台集成"} size={"lg"}>
+			<Modal
+				open={open()}
+				title={"添加新平台集成"}
+				size={"lg"}
+				onClose={() => setOpen(false)}
+			>
 				<PlatformForm
 					onClose={() => {
 						setOpen(false)
