@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/solid-router"
 import { useForm, useRequest } from "alova/client"
-import { createSignal, For } from "solid-js"
+import { createSignal, For, Show } from "solid-js"
 
 import { alova } from "@/api"
 import type { Account } from "@/api/types/account.ts"
@@ -96,7 +96,7 @@ function RouteComponent() {
 					<div class="flex flex-col gap-4">
 						<For each={accounts()}>
 							{(account) => (
-								<div class="flex items-center justify-between p-4 bg-zinc-50 rounded-2xl transition-all">
+								<div class="flex items-center justify-between p-4 bg-zinc-50 rounded-2xl transition-all relative">
 									<div class="flex items-center gap-4">
 										<div class="size-11 inline-flex items-center justify-center text-5xl">
 											{getPlatformIcon(account.platform)}
@@ -115,15 +115,46 @@ function RouteComponent() {
 											最后同步: {formatLastSync(account.last_sync_at)}
 										</span>
 										<div class="flex items-center gap-1.5 text-xs">
-											<div class="bg-green-500 size-2 rounded-full"></div>
-											已连接
+											<Show
+												when={account.is_active}
+												fallback={
+													<>
+														<div class="bg-red-500 size-2 rounded-full"></div>
+														已断开
+													</>
+												}
+											>
+												<div class="bg-green-500 size-2 rounded-full"></div>
+												已连接
+											</Show>
 										</div>
 
-										<Switch />
+										<Switch
+											checked={account.is_active}
+											onChange={async (checked) => {
+												await alova.Put("/accounts/" + account.id, {
+													is_active: checked,
+												})
+												refresh()
+											}}
+										/>
 									</div>
+
+									<p
+										class={
+											"absolute bottom-1 right-4 text-[10px] flex items-center gap-0.5 text-amber-400 font-normal"
+										}
+									>
+										<IconLucideCircleAlert class={"text-xs"} />
+										断开连接后不会再同步消息
+									</p>
 								</div>
 							)}
 						</For>
+
+						<Show when={accounts().length === 0}>
+							<p class={"text-secondary text-sm text-center"}>暂无集成的平台账号</p>
+						</Show>
 					</div>
 				</div>
 

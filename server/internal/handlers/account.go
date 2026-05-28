@@ -33,7 +33,7 @@ func (a *Account) Create(c *echo.Context) error {
 	if err := req.Validated(&cfg); err != nil {
 		return a.Failed(c, err)
 	}
-
+	
 	driver, err := services.Driver(cfg.Platform)
 	if err != nil {
 		return a.Failed(c, err)

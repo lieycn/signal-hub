@@ -16,10 +16,13 @@ var Account = struct {
 	Avatar     field.String
 	PlatformID field.String
 	Config     field.Struct[model.PlatformConfig]
+	IsActive   field.Bool
 	LastSyncAt field.Field[*carbon.Carbon]
 	CreatedAt  field.Struct[carbon.Carbon]
 	UpdatedAt  field.Struct[carbon.Carbon]
 	DeletedAt  field.Field[gorm.DeletedAt]
+	Members    field.Slice[model.Member]
+	Messages   field.Slice[model.Message]
 }{
 	ID:         field.Number[uint64]{}.WithColumn("id"),
 	Platform:   field.String{}.WithColumn("platform"),
@@ -27,10 +30,13 @@ var Account = struct {
 	Avatar:     field.String{}.WithColumn("avatar"),
 	PlatformID: field.String{}.WithColumn("platform_id"),
 	Config:     field.Struct[model.PlatformConfig]{}.WithName("Config"),
+	IsActive:   field.Bool{}.WithColumn("is_active"),
 	LastSyncAt: field.Field[*carbon.Carbon]{}.WithColumn("last_sync_at"),
 	CreatedAt:  field.Struct[carbon.Carbon]{}.WithName("CreatedAt"),
 	UpdatedAt:  field.Struct[carbon.Carbon]{}.WithName("UpdatedAt"),
 	DeletedAt:  field.Field[gorm.DeletedAt]{}.WithColumn("deleted_at"),
+	Members:    field.Slice[model.Member]{}.WithName("Members"),
+	Messages:   field.Slice[model.Message]{}.WithName("Messages"),
 }
 
 var PlatformConfig = struct {

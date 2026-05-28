@@ -14,8 +14,12 @@ func (a CreateAccount) ToModel() model.Account {
 	}
 }
 
-type UpdateAccount struct{}
+type UpdateAccount struct {
+	IsActive *bool `json:"is_active"`
+}
 
 func (a UpdateAccount) ToModel() model.Account {
-	return model.Account{}
+	return model.Account{
+		IsActive: a.IsActive,
+	}
 }

@@ -6,6 +6,7 @@ export interface Account {
 	name: string
 	avatar: string
 	config: PlatformConfig
+	is_active: boolean
 	last_sync_at: string
 	created_at: string
 	updated_at: string

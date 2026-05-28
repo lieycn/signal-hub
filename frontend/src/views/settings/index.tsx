@@ -17,38 +17,38 @@ function RouteComponent() {
 			</header>
 
 			<div class="px-12 pb-12 pt-0 min-w-4xl max-w-5xl mx-auto">
-				<div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-3xl p-8 mb-6">
-					<h3 class="text-base font-bold mb-6 flex items-center gap-2.5">
-						<svg
-							width="18"
-							height="18"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-						>
-							<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-							<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-						</svg>
-						通知偏好
-					</h3>
-					<div class="flex items-center justify-between py-4 border-b border-[rgba(0,0,0,0.03)]">
-						<div>
-							<h4 class="text-sm font-semibold mb-1">系统消息推送</h4>
-							<p class="text-xs text-secondary">在桌面端实时接收新消息通知</p>
-						</div>
+				{/*<div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-3xl p-8 mb-6">*/}
+				{/*	<h3 class="text-base font-bold mb-6 flex items-center gap-2.5">*/}
+				{/*		<svg*/}
+				{/*			width="18"*/}
+				{/*			height="18"*/}
+				{/*			viewBox="0 0 24 24"*/}
+				{/*			fill="none"*/}
+				{/*			stroke="currentColor"*/}
+				{/*			stroke-width="2"*/}
+				{/*		>*/}
+				{/*			<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>*/}
+				{/*			<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>*/}
+				{/*		</svg>*/}
+				{/*		通知偏好*/}
+				{/*	</h3>*/}
+				{/*	<div class="flex items-center justify-between py-4 border-b border-[rgba(0,0,0,0.03)]">*/}
+				{/*		<div>*/}
+				{/*			<h4 class="text-sm font-semibold mb-1">系统消息推送</h4>*/}
+				{/*			<p class="text-xs text-secondary">在桌面端实时接收新消息通知</p>*/}
+				{/*		</div>*/}
 
-						<Switch />
-					</div>
-					<div class="flex items-center justify-between py-4">
-						<div>
-							<h4 class="text-sm font-semibold mb-1">邮件摘要</h4>
-							<p class="text-xs text-secondary">每日接收未读消息的汇总邮件</p>
-						</div>
+				{/*		<Switch />*/}
+				{/*	</div>*/}
+				{/*	<div class="flex items-center justify-between py-4">*/}
+				{/*		<div>*/}
+				{/*			<h4 class="text-sm font-semibold mb-1">邮件摘要</h4>*/}
+				{/*			<p class="text-xs text-secondary">每日接收未读消息的汇总邮件</p>*/}
+				{/*		</div>*/}
 
-						<Switch />
-					</div>
-				</div>
+				{/*		<Switch />*/}
+				{/*	</div>*/}
+				{/*</div>*/}
 
 				<div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-3xl p-8 mb-6">
 					<h3 class="text-base font-bold mb-6 flex items-center gap-2.5">
@@ -93,63 +93,63 @@ function RouteComponent() {
 					</div>
 				</div>
 
-				<div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-3xl p-8 mb-6">
-					<h3 class="text-base font-bold mb-6 flex items-center gap-2.5">
-						<svg
-							width="18"
-							height="18"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-						>
-							<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-							<circle cx="9" cy="7" r="4"></circle>
-							<path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-							<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-						</svg>
-						团队成员与权限
-					</h3>
-					<div class="flex flex-col gap-3">
-						<div class="flex items-center justify-between p-3 bg-[#FAFAFA] rounded-2xl">
-							<div class="flex items-center gap-3">
-								<div class="w-8 h-8 rounded-full bg-[#E3F2FD] text-[#1976D2] flex items-center justify-center text-xs font-semibold">
-									王
-								</div>
-								<div>
-									<h4 class="text-sm font-semibold">王小明 (你)</h4>
-									<p class="text-[11px] text-secondary">
-										管理员 · admin@example.com
-									</p>
-								</div>
-							</div>
-							<span class="px-2.5 py-1 rounded-xl text-[11px] font-semibold bg-[rgba(0,0,0,0.05)] text-secondary">
-								所有权限
-							</span>
-						</div>
-						<div class="flex items-center justify-between p-3 bg-[#FAFAFA] rounded-2xl">
-							<div class="flex items-center gap-3">
-								<div class="w-8 h-8 rounded-full bg-[#F1F8E9] text-[#689F38] flex items-center justify-center text-xs font-semibold">
-									李
-								</div>
-								<div>
-									<h4 class="text-sm font-semibold">李丽莎</h4>
-									<p class="text-[11px] text-secondary">
-										运营专员 · lisa.l@example.com
-									</p>
-								</div>
-							</div>
-							<button class="px-4 py-2 rounded-[20px] border border-[rgba(0,0,0,0.1)] bg-transparent text-xs font-semibold cursor-pointer">
-								编辑权限
-							</button>
-						</div>
-					</div>
-					<div class="mt-4 text-center">
-						<button class="px-4 py-2 rounded-[20px] border border-dashed border-[rgba(0,0,0,0.1)] bg-transparent text-xs font-semibold cursor-pointer w-full">
-							+ 邀请新成员
-						</button>
-					</div>
-				</div>
+				{/*<div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-3xl p-8 mb-6">*/}
+				{/*	<h3 class="text-base font-bold mb-6 flex items-center gap-2.5">*/}
+				{/*		<svg*/}
+				{/*			width="18"*/}
+				{/*			height="18"*/}
+				{/*			viewBox="0 0 24 24"*/}
+				{/*			fill="none"*/}
+				{/*			stroke="currentColor"*/}
+				{/*			stroke-width="2"*/}
+				{/*		>*/}
+				{/*			<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>*/}
+				{/*			<circle cx="9" cy="7" r="4"></circle>*/}
+				{/*			<path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>*/}
+				{/*			<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>*/}
+				{/*		</svg>*/}
+				{/*		团队成员与权限*/}
+				{/*	</h3>*/}
+				{/*	<div class="flex flex-col gap-3">*/}
+				{/*		<div class="flex items-center justify-between p-3 bg-[#FAFAFA] rounded-2xl">*/}
+				{/*			<div class="flex items-center gap-3">*/}
+				{/*				<div class="w-8 h-8 rounded-full bg-[#E3F2FD] text-[#1976D2] flex items-center justify-center text-xs font-semibold">*/}
+				{/*					王*/}
+				{/*				</div>*/}
+				{/*				<div>*/}
+				{/*					<h4 class="text-sm font-semibold">王小明 (你)</h4>*/}
+				{/*					<p class="text-[11px] text-secondary">*/}
+				{/*						管理员 · admin@example.com*/}
+				{/*					</p>*/}
+				{/*				</div>*/}
+				{/*			</div>*/}
+				{/*			<span class="px-2.5 py-1 rounded-xl text-[11px] font-semibold bg-[rgba(0,0,0,0.05)] text-secondary">*/}
+				{/*				所有权限*/}
+				{/*			</span>*/}
+				{/*		</div>*/}
+				{/*		<div class="flex items-center justify-between p-3 bg-[#FAFAFA] rounded-2xl">*/}
+				{/*			<div class="flex items-center gap-3">*/}
+				{/*				<div class="w-8 h-8 rounded-full bg-[#F1F8E9] text-[#689F38] flex items-center justify-center text-xs font-semibold">*/}
+				{/*					李*/}
+				{/*				</div>*/}
+				{/*				<div>*/}
+				{/*					<h4 class="text-sm font-semibold">李丽莎</h4>*/}
+				{/*					<p class="text-[11px] text-secondary">*/}
+				{/*						运营专员 · lisa.l@example.com*/}
+				{/*					</p>*/}
+				{/*				</div>*/}
+				{/*			</div>*/}
+				{/*			<button class="px-4 py-2 rounded-[20px] border border-[rgba(0,0,0,0.1)] bg-transparent text-xs font-semibold cursor-pointer">*/}
+				{/*				编辑权限*/}
+				{/*			</button>*/}
+				{/*		</div>*/}
+				{/*	</div>*/}
+				{/*	<div class="mt-4 text-center">*/}
+				{/*		<button class="px-4 py-2 rounded-[20px] border border-dashed border-[rgba(0,0,0,0.1)] bg-transparent text-xs font-semibold cursor-pointer w-full">*/}
+				{/*			+ 邀请新成员*/}
+				{/*		</button>*/}
+				{/*	</div>*/}
+				{/*</div>*/}
 
 				<div class="bg-white border border-[rgba(0,0,0,0.05)] rounded-3xl p-8 mb-6">
 					<h3 class="text-base font-bold mb-6 flex items-center gap-2.5">
@@ -165,7 +165,7 @@ function RouteComponent() {
 						</svg>
 						安全与数据管理
 					</h3>
-					<div class="flex items-center justify-between py-4 border-b border-[rgba(0,0,0,0.03)]">
+					<div class="flex items-center justify-between py-4">
 						<div>
 							<h4 class="text-sm font-semibold mb-1">历史数据保留期限</h4>
 							<p class="text-xs text-secondary">自动清理过期的平台交互数据</p>
@@ -177,24 +177,24 @@ function RouteComponent() {
 							<option>永久保留</option>
 						</select>
 					</div>
-					<div class="flex items-center justify-between py-4 border-b border-[rgba(0,0,0,0.03)]">
-						<div>
-							<h4 class="text-sm font-semibold mb-1">双重身份验证 (2FA)</h4>
-							<p class="text-xs text-secondary">在登录时增加一层安全防护</p>
-						</div>
-						<button class="px-4 py-2 rounded-[20px] border border-[rgba(0,0,0,0.1)] bg-[#333333] text-white text-xs font-semibold cursor-pointer">
-							立即开启
-						</button>
-					</div>
-					<div class="flex items-center justify-between py-4">
-						<div>
-							<h4 class="text-sm font-semibold mb-1">登录活动审计</h4>
-							<p class="text-xs text-secondary">查看最近 30 天的账号登录日志</p>
-						</div>
-						<button class="px-4 py-2 rounded-[20px] border border-[rgba(0,0,0,0.1)] bg-transparent text-xs font-semibold cursor-pointer">
-							查看日志
-						</button>
-					</div>
+					{/*<div class="flex items-center justify-between py-4 border-b border-[rgba(0,0,0,0.03)]">*/}
+					{/*	<div>*/}
+					{/*		<h4 class="text-sm font-semibold mb-1">双重身份验证 (2FA)</h4>*/}
+					{/*		<p class="text-xs text-secondary">在登录时增加一层安全防护</p>*/}
+					{/*	</div>*/}
+					{/*	<button class="px-4 py-2 rounded-[20px] border border-[rgba(0,0,0,0.1)] bg-[#333333] text-white text-xs font-semibold cursor-pointer">*/}
+					{/*		立即开启*/}
+					{/*	</button>*/}
+					{/*</div>*/}
+					{/*<div class="flex items-center justify-between py-4">*/}
+					{/*	<div>*/}
+					{/*		<h4 class="text-sm font-semibold mb-1">登录活动审计</h4>*/}
+					{/*		<p class="text-xs text-secondary">查看最近 30 天的账号登录日志</p>*/}
+					{/*	</div>*/}
+					{/*	<button class="px-4 py-2 rounded-[20px] border border-[rgba(0,0,0,0.1)] bg-transparent text-xs font-semibold cursor-pointer">*/}
+					{/*		查看日志*/}
+					{/*	</button>*/}
+					{/*</div>*/}
 				</div>
 			</div>
 		</main>

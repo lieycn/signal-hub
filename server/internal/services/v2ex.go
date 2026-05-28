@@ -81,6 +81,18 @@ func (v V2ex) Connect(ctx context.Context, config *model.PlatformConfig) (*model
 		return nil, errors.New(result.Message)
 	}
 
+	platformID := cast.ToString(result.Result.Id)
+	count, err := x.Model[model.Account]().Where(
+		g.Account.Platform.Eq(constants.PlatformV2ex),
+		g.Account.PlatformID.Eq(platformID),
+	).Count(ctx, "id")
+	if err != nil {
+		return nil, err
+	}
+	if count > 0 {
+		return nil, fmt.Errorf("此账号已授权")
+	}
+
 	acc := model.Account{
 		Platform:   constants.PlatformV2ex,
 		Name:       result.Result.Username,
@@ -88,8 +100,7 @@ func (v V2ex) Connect(ctx context.Context, config *model.PlatformConfig) (*model
 		Config:     config,
 		PlatformID: cast.ToString(result.Result.Id),
 	}
-	err := x.Model[model.Account]().Create(ctx, &acc)
-	if err != nil {
+	if err := x.Model[model.Account]().Create(ctx, &acc); err != nil {
 		return nil, err
 	}
 
@@ -100,7 +111,7 @@ func (v V2ex) Connect(ctx context.Context, config *model.PlatformConfig) (*model
 		Name:             result.Result.Username,
 		Avatar:           result.Result.AvatarNormal,
 	}
-	err = x.Model[model.Member]().Create(ctx, &member)
+	err = x.DB().WithContext(ctx).Clauses(clause.OnConflict{DoNothing: true}).Create(&member).Error
 	if err != nil {
 		return nil, err
 	}

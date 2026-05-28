@@ -30,14 +30,27 @@
             opacity: 0;
             width: 0;
             height: 0;
-        }
+            position: absolute;
 
-        input:checked + .slider {
-            @apply bg-green-500;
-        }
+            &:checked + .slider {
+                @apply bg-primary;
+            }
 
-        input:checked + .slider:before {
-            transform: translateX(20px);
+            &:checked + .slider:before {
+                transform: translateX(20px);
+            }
+
+            &:disabled + .slider {
+                @apply opacity-50 cursor-not-allowed;
+            }
+
+            &:focus-visible + .slider {
+                @apply outline-none ring-2 ring-primary ring-offset-2;
+            }
+
+            &:readonly:checked + .slider {
+                cursor: default;
+            }
         }
 
         .slider {
@@ -62,6 +75,70 @@
                 transition: .3s;
                 border-radius: 50%;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        // Size variants
+        &.switch_sm {
+            @apply w-9 h-5;
+
+            .slider:before {
+                height: 14px;
+                width: 14px;
+                left: 2px;
+                bottom: 2px;
+            }
+
+            input:checked + .slider:before {
+                transform: translateX(16px);
+            }
+        }
+
+        &.switch_md {
+            @apply w-11 h-6;
+
+            input:checked + .slider:before {
+                transform: translateX(20px);
+            }
+        }
+
+        &.switch_lg {
+            @apply w-14 h-7;
+
+            .slider:before {
+                height: 22px;
+                width: 22px;
+                left: 3px;
+                bottom: 3px;
+            }
+
+            input:checked + .slider:before {
+                transform: translateX(24px);
+            }
+        }
+
+        // Color variants
+        &.switch_primary {
+            input:checked + .slider {
+                @apply bg-primary;
+            }
+        }
+
+        &.switch_success {
+            input:checked + .slider {
+                @apply bg-green-500;
+            }
+        }
+
+        &.switch_danger {
+            input:checked + .slider {
+                @apply bg-red-500;
+            }
+        }
+
+        &.switch_warning {
+            input:checked + .slider {
+                @apply bg-orange-500;
             }
         }
     }

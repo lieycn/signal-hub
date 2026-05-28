@@ -4,6 +4,7 @@ package g
 
 import (
 	"github.com/dromara/carbon/v2"
+	"github.com/lieywe/msghub/internal/model"
 	"gorm.io/cli/gorm/field"
 )
 
@@ -18,6 +19,8 @@ var Message = struct {
 	SendAt       field.Field[*carbon.Carbon]
 	CreatedAt    field.Struct[carbon.Carbon]
 	UpdatedAt    field.Struct[carbon.Carbon]
+	Account      field.Struct[model.Account]
+	FromMember   field.Struct[model.Member]
 }{
 	ID:           field.Number[uint64]{}.WithColumn("id"),
 	AccountID:    field.Number[uint64]{}.WithColumn("account_id"),
@@ -29,4 +32,6 @@ var Message = struct {
 	SendAt:       field.Field[*carbon.Carbon]{}.WithColumn("send_at"),
 	CreatedAt:    field.Struct[carbon.Carbon]{}.WithName("CreatedAt"),
 	UpdatedAt:    field.Struct[carbon.Carbon]{}.WithName("UpdatedAt"),
+	Account:      field.Struct[model.Account]{}.WithName("Account"),
+	FromMember:   field.Struct[model.Member]{}.WithName("FromMember"),
 }

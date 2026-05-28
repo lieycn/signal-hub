@@ -55,11 +55,11 @@ export function Chat(props: Props) {
 							</div>
 						</header>
 
-						<div class="flex-1 px-6 overflow-y-auto flex flex-col gap-6">
+						<div class="flex-1 px-6 py-4 overflow-y-auto flex flex-col gap-6">
 							<For each={data()}>
 								{(msg) => (
 									<div class="max-w-4/5 flex flex-col gap-1 self-start">
-										<div class={"flex gap-1 items-center"}>
+										<div class={"flex gap-1 items-start"}>
 											<h1
 												class={"text-xs font-normal [&_a]:hover:underline"}
 												innerHTML={msg.title}
@@ -101,7 +101,7 @@ export function Chat(props: Props) {
 						</footer>
 					</main>
 
-					<Info class={"hidden xl:block xl:col-span-4"} />
+					<Info class={"hidden xl:block xl:col-span-4"} memberId={props.memberId} />
 				</div>
 			</Spin>
 		</Show>
