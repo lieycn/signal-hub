@@ -1,31 +1,41 @@
 import { usePagination } from "alova/client"
-import { For, Match, Show, Switch } from "solid-js"
+import { For, Show } from "solid-js"
 
 import { alova } from "@/api"
 import type { Message } from "@/api/types/message.ts"
+import { Spin } from "@/components/widgets"
 import { Empty } from "@/views/components/empty"
 
 import { Info } from "./info.tsx"
 
-export function Chat() {
+interface Props {
+	memberId?: number
+}
+
+export function Chat(props: Props) {
 	const { data, loading } = usePagination(
 		(page, pageSize) =>
 			alova.Get<PaginationResp<Message>>("/messages", {
 				params: {
 					page,
 					pageSize,
+					"filter[from_member_id][eq]": props.memberId,
 				},
 			}),
 		{
 			initialData: [],
+			watchingStates: [() => props.memberId],
+			middleware: (_, next) => {
+				if (props.memberId) {
+					return next()
+				}
+			},
 		},
 	)
 
 	return (
-		<Switch fallback={<Empty />}>
-			<Match when={loading()}>loading...</Match>
-
-			<Match when={data().length > 0}>
+		<Show when={data().length > 0} fallback={<Empty />}>
+			<Spin spinning={loading()}>
 				<div class={"size-full grid grid-cols-12"}>
 					<main class="col-span-12 xl:col-span-8 flex flex-col bg-linear-to-b from-white to-[#FDFDFD] border-r border-[rgba(0,0,0,0.03)] size-full overflow-hidden">
 						<header class="px-6 py-4 bg-white/75 backdrop-blur-md flex items-center justify-between border-b border-[rgba(0,0,0,0.02)]">
@@ -93,7 +103,7 @@ export function Chat() {
 
 					<Info class={"hidden xl:block xl:col-span-4"} />
 				</div>
-			</Match>
-		</Switch>
+			</Spin>
+		</Show>
 	)
 }

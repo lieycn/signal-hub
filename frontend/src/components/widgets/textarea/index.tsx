@@ -1,4 +1,4 @@
-import { Show, type JSX } from "solid-js"
+import { Show } from "solid-js"
 
 import { cn } from "@/libs/utils"
 
@@ -46,8 +46,7 @@ const sizeClasses = {
 }
 
 const variantClasses = {
-	default:
-		"bg-white border-zinc-200 focus:border-primary focus:ring-primary/20 focus:bg-white",
+	default: "bg-white border-zinc-200 focus:border-primary focus:ring-primary/20 focus:bg-white",
 	filled: "bg-zinc-50 border-transparent focus:bg-white focus:border-primary focus:ring-primary/20",
 	outlined:
 		"bg-transparent border-zinc-300 focus:border-primary focus:ring-primary/20 focus:bg-transparent",
@@ -61,8 +60,7 @@ const resizeClasses = {
 }
 
 export function Textarea(props: TextareaProps) {
-	const textareaId = () =>
-		props.id || `textarea-${Math.random().toString(36).slice(2, 9)}`
+	const textareaId = () => props.id || `textarea-${Math.random().toString(36).slice(2, 9)}`
 
 	const size = () => props.size || "md"
 	const variant = () => props.variant || "default"
@@ -89,7 +87,7 @@ export function Textarea(props: TextareaProps) {
 					class={cn(
 						"font-medium text-zinc-700",
 						sizeClasses[size()].label,
-						props.required && "after:content-['*'] after:ml-0.5 after:text-red-500"
+						props.required && "after:content-['*'] after:ml-0.5 after:text-red-500",
 					)}
 				>
 					{props.label}
@@ -111,7 +109,6 @@ export function Textarea(props: TextareaProps) {
 				rows={props.rows || 4}
 				minLength={props.minLength}
 				maxLength={props.maxLength}
-				pattern={props.pattern}
 				class={cn(
 					"flex-1 w-full border rounded-xl transition-all duration-200 placeholder:text-zinc-400",
 					"focus:outline-none focus:ring-4",
@@ -119,9 +116,10 @@ export function Textarea(props: TextareaProps) {
 					"readonly:cursor-default readonly:bg-zinc-50",
 					sizeClasses[size()].textarea,
 					hasError() && "border-red-500 focus:border-red-500 focus:ring-red-500/20",
-					hasSuccess() && "border-green-500 focus:border-green-500 focus:ring-green-500/20",
+					hasSuccess() &&
+						"border-green-500 focus:border-green-500 focus:ring-green-500/20",
 					variantClasses[variant()],
-					resizeClasses[props.resize || "vertical"]
+					resizeClasses[props.resize || "vertical"],
 				)}
 			/>
 
@@ -140,7 +138,7 @@ export function Textarea(props: TextareaProps) {
 							class={cn(
 								"mt-0.5 shrink-0",
 								hasError() && "text-red-500",
-								hasSuccess() && "text-green-500"
+								hasSuccess() && "text-green-500",
 							)}
 						>
 							<Show when={hasError()}>
@@ -159,7 +157,7 @@ export function Textarea(props: TextareaProps) {
 						class={cn(
 							hasError() && "text-red-500",
 							hasSuccess() && "text-green-500",
-							!hasError() && !hasSuccess() && "text-zinc-500"
+							!hasError() && !hasSuccess() && "text-zinc-500",
 						)}
 					>
 						{props.error || props.success || props.description}
