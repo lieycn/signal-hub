@@ -15,4 +15,8 @@ type Member struct {
 	CreatedAt        *carbon.Carbon `json:"created_at"`
 	UpdatedAt        *carbon.Carbon `json:"updated_at"`
 	DeletedAt        gorm.DeletedAt `json:"-"`
+
+	// Associations
+	Account   *Account   `json:"account,omitempty" gorm:"foreignKey:AccountID;constraint:OnDelete:CASCADE"`
+	Messages  []Message  `json:"messages,omitempty" gorm:"foreignKey:FromMemberId;constraint:OnDelete:SET NULL"`
 }

@@ -13,4 +13,8 @@ type Message struct {
 	SendAt       *carbon.Carbon `json:"send_at" gen:"time"`
 	CreatedAt    carbon.Carbon  `json:"created_at"`
 	UpdatedAt    carbon.Carbon  `json:"updated_at"`
+
+	// Associations
+	Account     *Account `json:"account,omitempty" gorm:"foreignKey:AccountID;constraint:OnDelete:CASCADE"`
+	FromMember  *Member  `json:"from_member,omitempty" gorm:"foreignKey:FromMemberId;constraint:OnDelete:SET NULL"`
 }

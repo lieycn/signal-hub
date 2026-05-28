@@ -66,6 +66,38 @@
         }
     }
 
+    .checkbox {
+        @apply appearance-none w-5 h-5 border-2 border-slate-300 rounded cursor-pointer transition-all relative;
+
+        &:hover:not(:disabled) {
+            @apply border-primary;
+        }
+
+        &:checked {
+            @apply bg-primary border-primary;
+
+            &:after {
+                content: "";
+                position: absolute;
+                left: 7px;
+                top: 3px;
+                width: 5px;
+                height: 10px;
+                border: solid white;
+                border-width: 0 2px 2px 0;
+                transform: rotate(45deg);
+            }
+        }
+
+        &:disabled {
+            @apply cursor-not-allowed opacity-50;
+        }
+
+        &:focus-visible {
+            @apply outline-none ring-2 ring-primary ring-offset-2;
+        }
+    }
+
     .btn {
         @apply transition-all text-xs font-semibold cursor-pointer py-2 px-4 rounded-3xl inline-flex items-center gap-2;
 

@@ -1,7 +1,9 @@
+import type { Platform } from "@/api/types/platform.ts"
+
 export interface Member {
 	id: number
 	account_id: number
-	platform: "v2ex"
+	platform: Platform
 	platform_member_id: string
 	name: string
 	avatar: string

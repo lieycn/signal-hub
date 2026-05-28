@@ -16,6 +16,10 @@ type Account struct {
 	CreatedAt  carbon.Carbon   `json:"created_at"`
 	UpdatedAt  carbon.Carbon   `json:"updated_at"`
 	DeletedAt  gorm.DeletedAt  `json:"-"`
+
+	// Associations
+	Members   []Member   `json:"members,omitempty" gorm:"foreignKey:AccountID;constraint:OnDelete:CASCADE"`
+	Messages  []Message  `json:"messages,omitempty" gorm:"foreignKey:AccountID;constraint:OnDelete:CASCADE"`
 }
 
 type PlatformConfig struct {

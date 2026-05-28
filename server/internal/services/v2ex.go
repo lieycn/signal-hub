@@ -121,7 +121,7 @@ func (v V2ex) SyncMessage(ctx context.Context, account *model.Account) ([]model.
 		return nil, ErrInvalidPlatformConfig
 	}
 
-	client := surf.NewClient().Builder().
+	client := surf.NewClient().Builder().WithContext(ctx).
 		BearerAuth(ge.String(account.Config.V2ex.PersonalAccessToken)).
 		Impersonate().Chrome().
 		Build().Unwrap()
@@ -197,4 +197,57 @@ func (v V2ex) SyncMessage(ctx context.Context, account *model.Account) ([]model.
 	}
 
 	return msgs, nil
+}
+
+type PlatformMemberInfo struct {
+	Id             int    `json:"id"`
+	Username       string `json:"username"`
+	Url            string `json:"url"`
+	Website        string `json:"website"`
+	Twitter        string `json:"twitter"`
+	Psn            string `json:"psn"`
+	Github         string `json:"github"`
+	Btc            string `json:"btc"`
+	Location       string `json:"location"`
+	Tagline        string `json:"tagline"`
+	Bio            string `json:"bio"`
+	AvatarMini     string `json:"avatar_mini"`
+	AvatarNormal   string `json:"avatar_normal"`
+	AvatarLarge    string `json:"avatar_large"`
+	AvatarXlarge   string `json:"avatar_xlarge"`
+	AvatarXxlarge  string `json:"avatar_xxlarge"`
+	AvatarXxxlarge string `json:"avatar_xxxlarge"`
+	Created        int    `json:"created"`
+	LastModified   int    `json:"last_modified"`
+	Pro            int    `json:"pro"`
+	Status         string `json:"status"`
+}
+
+func (v V2ex) syncMemberInfo(ctx context.Context, account *model.Account, memberName string) (*model.Member, error) {
+	if account.Config.V2ex == nil {
+		return nil, ErrInvalidPlatformConfig
+	}
+
+	client := surf.NewClient().Builder().WithContext(ctx).
+		BearerAuth(ge.String(account.Config.V2ex.PersonalAccessToken)).
+		Impersonate().Chrome().
+		Build().Unwrap()
+
+	resp := client.Get(ge.String(fmt.Sprintf("%s/api/members/show.json?username=%s", v.baseUrl, memberName))).Do()
+	if !resp.IsOk() {
+		return nil, resp.Err()
+	}
+
+	var info PlatformMemberInfo
+	if err := resp.Ok().Body.JSON(&info); err != nil {
+		return nil, err
+	}
+
+	return &model.Member{
+		AccountID:        account.ID,
+		Platform:         constants.PlatformV2ex,
+		PlatformMemberId: cast.ToString(info.Id),
+		Name:             info.Username,
+		Avatar:           info.AvatarNormal,
+	}, nil
 }

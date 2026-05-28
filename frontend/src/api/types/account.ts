@@ -1,6 +1,8 @@
+import type { Platform } from "@/api/types/platform.ts"
+
 export interface Account {
 	id: number
-	platform: "v2ex"
+	platform: Platform
 	name: string
 	avatar: string
 	config: PlatformConfig

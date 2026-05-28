@@ -1,5 +1,7 @@
 export * from "./switch"
+export * from "./platform"
 export * from "./modal"
 export * from "./input"
 export * from "./textarea"
 export * from "./button"
+export * from "./checkbox"
