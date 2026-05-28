@@ -151,7 +151,7 @@
         }
 
         // Shape variants
-        &.input-rounded {
+        &.input_rounded {
             @apply rounded-full;
         }
 
