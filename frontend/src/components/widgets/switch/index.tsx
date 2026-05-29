@@ -18,16 +18,16 @@ export interface SwitchProps {
 }
 
 const sizeClasses = {
-	sm: "switch-sm",
-	md: "switch-md",
-	lg: "switch-lg",
+	sm: "switch_sm",
+	md: "switch_md",
+	lg: "switch_lg",
 }
 
 const colorClasses = {
-	primary: "switch-primary",
-	success: "switch-success",
-	danger: "switch-danger",
-	warning: "switch-warning",
+	primary: "switch_primary",
+	success: "switch_success",
+	danger: "switch_danger",
+	warning: "switch_warning",
 }
 
 export function Switch(props: SwitchProps) {

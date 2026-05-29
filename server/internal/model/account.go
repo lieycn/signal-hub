@@ -24,9 +24,14 @@ type Account struct {
 }
 
 type PlatformConfig struct {
-	V2ex *V2exConfig `json:"v2ex,omitempty"`
+	V2ex  *V2exConfig  `json:"v2ex,omitempty"`
+	Libra *LibraConfig `json:"libra,omitempty"`
 }
 
 type V2exConfig struct {
 	PersonalAccessToken string `json:"personal_access_token"`
+}
+
+type LibraConfig struct {
+	AccessToken string `json:"access_token"`
 }

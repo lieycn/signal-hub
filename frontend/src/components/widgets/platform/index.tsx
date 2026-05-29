@@ -21,6 +21,12 @@ export function PlatformTag(props: Props) {
 					V2EX
 				</span>
 			</Match>
+			<Match when={props.platform === "2libra"}>
+				<span class="text-xs font-semibold inline-flex items-center gap-1">
+					<IconLocalLibra class={"text-xl"} />
+					2Libra
+				</span>
+			</Match>
 		</Switch>
 	)
 }

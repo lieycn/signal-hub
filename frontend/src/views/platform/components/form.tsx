@@ -1,5 +1,5 @@
 import { useForm } from "alova/client"
-import { Show } from "solid-js"
+import { For, Show } from "solid-js"
 
 import { alova } from "@/api"
 import { Button, Input } from "@/components/widgets"
@@ -13,7 +13,7 @@ export function PlatformForm(props: Props) {
 		(form) => alova.Post("/accounts", form),
 		{
 			initialForm: {
-				platform: "v2ex",
+				platform: "",
 				config: {},
 			},
 		},
@@ -21,46 +21,79 @@ export function PlatformForm(props: Props) {
 
 	onSuccess(() => props.onClose && props.onClose())
 
+	const platforms = [
+		{
+			title: "V2ex",
+			description: "同步帖子评论、回复和私信内容。",
+			platform: "v2ex",
+			icon: <IconSimpleIconsV2ex class={"text-2xl"} />,
+		},
+		{
+			title: "2libra",
+			description: "同步帖子评论、回复和私信内容。",
+			platform: "2libra",
+			icon: <IconLocalLibra class={"text-3xl"} />,
+		},
+	]
+
 	return (
 		<div>
 			<Show when={form().platform.length === 0}>
 				<div class={"grid grid-cols-2 gap-4"}>
-					<div class="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col gap-4 transition-all hover:border-slate-200">
-						<div class="flex justify-between items-start">
-							<div class="size-11 rounded-xl flex items-center justify-center">
-								<IconSimpleIconsV2ex class={"text-2xl"} />
-							</div>
+					<For each={platforms}>
+						{(platform) => (
+							<div class="p-5 bg-white border border-slate-100 rounded-2xl flex flex-col gap-4 transition-all hover:border-slate-200">
+								<div class="flex justify-between items-start">
+									{platform.icon}
 
-							<button
-								class="btn btn-outline"
-								onClick={() => updateForm({ platform: "v2ex" })}
-							>
-								连接
-							</button>
-						</div>
-						<div>
-							<h5 class={"text-base font-semibold mb-1"}>Instagram Business</h5>
-							<p class={"text-xs text-secondary leading-normal"}>
-								同步帖子评论、快拍回复和私信内容。
-							</p>
-						</div>
-					</div>
+									<button
+										class="btn btn-outline"
+										onClick={() => updateForm({ platform: platform.platform })}
+									>
+										连接
+									</button>
+								</div>
+								<div>
+									<h5 class={"text-base font-semibold mb-1"}>{platform.title}</h5>
+									<p class={"text-xs text-secondary leading-normal"}>
+										{platform.description}
+									</p>
+								</div>
+							</div>
+						)}
+					</For>
 				</div>
 			</Show>
 
-			<Show when={form().platform === "v2ex"}>
+			<Show when={form().platform}>
 				<div class={"space-y-6"}>
-					<Input
-						label={"Personal Access Token"}
-						placeholder={"Personal Access Token"}
-						onChange={(value) =>
-							updateForm({
-								config: {
-									v2ex: { personal_access_token: value },
-								},
-							})
-						}
-					/>
+					<Show when={form().platform === "v2ex"}>
+						<Input
+							label={"Personal Access Token"}
+							placeholder={"Personal Access Token"}
+							onChange={(value) =>
+								updateForm({
+									config: {
+										v2ex: { personal_access_token: value },
+									},
+								})
+							}
+						/>
+					</Show>
+
+					<Show when={form().platform === "2libra"}>
+						<Input
+							label={"Access Token"}
+							placeholder={"Access Token"}
+							onChange={(value) =>
+								updateForm({
+									config: {
+										libra: { access_token: value },
+									},
+								})
+							}
+						/>
+					</Show>
 
 					<div class={"text-center"}>
 						<Button

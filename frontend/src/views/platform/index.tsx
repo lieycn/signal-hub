@@ -21,8 +21,8 @@ function RouteComponent() {
 		switch (platform) {
 			case "v2ex":
 				return <IconSimpleIconsV2ex />
-			case "tiktok":
-				return <IconLogosTelegram />
+			case "2libra":
+				return <IconLocalLibra />
 			case "facebook":
 				return <IconLogosFacebook />
 			case "wechat":
