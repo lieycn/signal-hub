@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# msghub release script
+# signal-hub release script
 # Usage: ./release.sh [version] [create_release]
 #   version: version tag (e.g., v1.0.0)
 #   create_release: "yes" to create GitHub release (default: no)
@@ -57,7 +57,7 @@ build_server() {
         GOOS=${platform_split[0]}
         GOARCH=${platform_split[1]}
 
-        output_name="msghub-$GOOS-$GOARCH"
+        output_name="signal-hub-$GOOS-$GOARCH"
         if [ $GOOS = "windows" ]; then
             output_name+='.exe'
         fi
@@ -119,7 +119,7 @@ create_github_release() {
 
     # Create release with binaries
     gh release create "$version" \
-        --title "msghub $version" \
+        --title "signal-hub $version" \
         --notes "Release $version" \
         build/*
 
@@ -147,7 +147,7 @@ main() {
     check_version_format "$version"
 
     echo -e "${GREEN}======================================${NC}"
-    echo -e "${GREEN}msghub Release Script${NC}"
+    echo -e "${GREEN}signal-hub Release Script${NC}"
     echo -e "${GREEN}======================================${NC}"
     echo -e "${GREEN}Version: $version${NC}"
     echo -e "${GREEN}Create Release: $create_release${NC}"
