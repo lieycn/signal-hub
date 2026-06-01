@@ -1,3 +1,4 @@
+import type { Message } from "@/api/types/message.ts"
 import type { Platform } from "@/api/types/platform.ts"
 
 export interface Member {
@@ -9,4 +10,5 @@ export interface Member {
 	avatar: string
 	created_at: string
 	updated_at: string
+	latest_message?: Message
 }
