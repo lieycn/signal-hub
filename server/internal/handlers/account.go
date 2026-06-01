@@ -8,6 +8,7 @@ import (
 	"github.com/lieywe/msghub/internal/services"
 	"github.com/xframe-go/x/handlers"
 	"github.com/xframe-go/x/responses"
+	"github.com/xframe-go/x/x"
 )
 
 type Account struct {
@@ -33,7 +34,7 @@ func (a *Account) Create(c *echo.Context) error {
 	if err := req.Validated(&cfg); err != nil {
 		return a.Failed(c, err)
 	}
-	
+
 	driver, err := services.Driver(cfg.Platform)
 	if err != nil {
 		return a.Failed(c, err)
@@ -43,5 +44,19 @@ func (a *Account) Create(c *echo.Context) error {
 	if err != nil {
 		return a.Failed(c, err)
 	}
+
+	go func() {
+		driver, err = services.Driver(account.Platform)
+		if err != nil {
+			x.Logger().Error(err)
+			return
+		}
+
+		if _, err = driver.SyncMessage(ctx, account); err != nil {
+			x.Logger().Error(err)
+			return
+		}
+	}()
+
 	return a.Success(c, account)
 }

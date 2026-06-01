@@ -17,6 +17,7 @@ type Member struct {
 	DeletedAt        gorm.DeletedAt `json:"-"`
 
 	// Associations
-	Account  *Account  `json:"account,omitempty" gorm:"foreignKey:AccountID;constraint:OnDelete:CASCADE"`
-	Messages []Message `json:"messages,omitempty" gorm:"foreignKey:FromMemberId;constraint:OnDelete:SET NULL"`
+	Account       *Account  `json:"account,omitempty" gorm:"foreignKey:AccountID;constraint:OnDelete:CASCADE"`
+	Messages      []Message `json:"messages,omitempty" gorm:"foreignKey:FromMemberId;constraint:OnDelete:SET NULL"`
+	LatestMessage *Message  `json:"latest_message,omitempty" gorm:"foreignKey:FromMemberId;constraint:OnDelete:CASCADE"`
 }
