@@ -78,11 +78,11 @@ export function Chat(props: Props) {
 								)}
 							</For>
 
-							<div class="max-w-[80%] flex flex-col gap-1 self-end items-end">
-								<div class="px-4.5 py-3 rounded-2xl text-sm leading-relaxed bg-[#333333] text-white rounded-br-lg">
-									嗨，Alex！那个是 Philips Hue 系列的一款极简主义设计款。
-								</div>
-							</div>
+							{/*<div class="max-w-[80%] flex flex-col gap-1 self-end items-end">*/}
+							{/*	<div class="px-4.5 py-3 rounded-2xl text-sm leading-relaxed bg-[#333333] text-white rounded-br-lg">*/}
+							{/*		嗨，Alex！那个是 Philips Hue 系列的一款极简主义设计款。*/}
+							{/*	</div>*/}
+							{/*</div>*/}
 						</div>
 
 						<footer class="px-6 py-5 flex items-center gap-3">

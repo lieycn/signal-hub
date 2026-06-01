@@ -48,7 +48,7 @@
                 @apply outline-none ring-2 ring-primary ring-offset-2;
             }
 
-            &:readonly:checked + .slider {
+            &:read-only:checked + .slider {
                 cursor: default;
             }
         }
@@ -78,7 +78,6 @@
             }
         }
 
-        // Size variants
         &.switch_sm {
             @apply w-9 h-5;
 
@@ -117,7 +116,6 @@
             }
         }
 
-        // Color variants
         &.switch_primary {
             input:checked + .slider {
                 @apply bg-primary;
@@ -214,7 +212,6 @@
         @apply px-4 py-2 text-sm;
         @apply bg-white border-zinc-200 focus:border-primary focus:ring-primary/20 focus:bg-white;
 
-        // Size variants
         &.input_sm {
             @apply px-3 py-1.5 text-sm;
         }
@@ -227,7 +224,6 @@
             @apply px-4 py-3 text-base;
         }
 
-        // Shape variants
         &.input_rounded {
             @apply rounded-full;
         }
@@ -236,7 +232,6 @@
             @apply rounded-lg;
         }
 
-        // Variant styles
         &.input_default {
             @apply bg-white border-zinc-200 focus:border-primary focus:ring-primary/20 focus:bg-white;
         }
@@ -249,7 +244,6 @@
             @apply bg-transparent border-zinc-300 focus:border-primary focus:ring-primary/20 focus:bg-transparent;
         }
 
-        // State styles
         &.input_error {
             @apply border-red-500 focus:border-red-500 focus:ring-red-500/20;
         }

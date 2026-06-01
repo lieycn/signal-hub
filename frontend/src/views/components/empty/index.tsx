@@ -10,8 +10,8 @@ export function Empty() {
 
 				<h1 class="text-2xl font-bold text-[#333333] mb-3">欢迎使用聚合消息中心</h1>
 				<p class="text-[15px] text-secondary max-w-100 leading-relaxed mb-10">
-					从左侧列表中选择一个联系人开始对话。您可以实时管理来自 TikTok, Facebook,
-					钉钉等多个平台的客户沟通。
+					从左侧列表中选择一个联系人开始对话。您可以实时管理来自 V2ex, 2libra,
+					等多个平台的联系人沟通。
 				</p>
 
 				<div class="flex gap-4">
