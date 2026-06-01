@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	"github.com/lieywe/msghub/internal/model"
-	"github.com/lieywe/msghub/internal/model/g"
+	"github.com/lieycn/signal-hub/internal/model"
+	"github.com/lieycn/signal-hub/internal/model/g"
 	"github.com/xframe-go/x/repository"
 	"gorm.io/gorm"
 )

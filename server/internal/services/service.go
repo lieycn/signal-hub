@@ -1,6 +1,6 @@
 package services
 
-import "github.com/lieywe/msghub/internal/constants"
+import "github.com/lieycn/signal-hub/internal/constants"
 
 var drivers = map[string]PlatformDriver{
 	constants.PlatformV2ex:  NewV2ex(),

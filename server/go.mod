@@ -1,4 +1,4 @@
-module github.com/lieywe/msghub
+module github.com/lieycn/signal-hub
 
 go 1.26.0
 

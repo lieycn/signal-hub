@@ -3,7 +3,7 @@ package services
 import (
 	"context"
 
-	"github.com/lieywe/msghub/internal/model"
+	"github.com/lieycn/signal-hub/internal/model"
 )
 
 type PlatformDriver interface {

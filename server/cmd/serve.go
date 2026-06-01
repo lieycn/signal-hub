@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/lieywe/msghub/internal/config"
-	"github.com/lieywe/msghub/internal/routes"
+	"github.com/lieycn/signal-hub/internal/config"
+	"github.com/lieycn/signal-hub/internal/routes"
 	"github.com/spf13/cobra"
 	"github.com/xframe-go/x/env"
 	"github.com/xframe-go/x/x"

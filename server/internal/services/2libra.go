@@ -12,9 +12,9 @@ import (
 	ge "github.com/enetx/g"
 	"github.com/enetx/surf"
 	"github.com/gogf/gf/v2/container/gset"
-	"github.com/lieywe/msghub/internal/constants"
-	"github.com/lieywe/msghub/internal/model"
-	"github.com/lieywe/msghub/internal/model/g"
+	"github.com/lieycn/signal-hub/internal/constants"
+	"github.com/lieycn/signal-hub/internal/model"
+	"github.com/lieycn/signal-hub/internal/model/g"
 	"github.com/xframe-go/x/x"
 	"gorm.io/gorm/clause"
 )

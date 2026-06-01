@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"github.com/lieywe/msghub/internal/api"
-	"github.com/lieywe/msghub/internal/model"
-	"github.com/lieywe/msghub/internal/repositories"
+	"github.com/lieycn/signal-hub/internal/api"
+	"github.com/lieycn/signal-hub/internal/model"
+	"github.com/lieycn/signal-hub/internal/repositories"
 	"github.com/xframe-go/x/handlers"
 	"github.com/xframe-go/x/requests"
 	"github.com/xframe-go/x/responses"

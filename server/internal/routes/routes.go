@@ -2,8 +2,8 @@ package routes
 
 import (
 	"github.com/labstack/echo/v5/middleware"
-	"github.com/lieywe/msghub/internal/handlers"
-	"github.com/lieywe/msghub/public"
+	"github.com/lieycn/signal-hub/internal/handlers"
+	"github.com/lieycn/signal-hub/public"
 	"github.com/xframe-go/x/x"
 )
 

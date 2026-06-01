@@ -1,6 +1,6 @@
 package api
 
-import "github.com/lieywe/msghub/internal/model"
+import "github.com/lieycn/signal-hub/internal/model"
 
 type CreateMember struct {
 }

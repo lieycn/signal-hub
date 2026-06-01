@@ -4,7 +4,7 @@ package g
 
 import (
 	"github.com/dromara/carbon/v2"
-	"github.com/lieywe/msghub/internal/model"
+	"github.com/lieycn/signal-hub/internal/model"
 	"gorm.io/cli/gorm/field"
 	"gorm.io/gorm"
 )

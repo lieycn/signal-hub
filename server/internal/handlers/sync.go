@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"github.com/labstack/echo/v5"
-	"github.com/lieywe/msghub/internal/model"
-	"github.com/lieywe/msghub/internal/services"
+	"github.com/lieycn/signal-hub/internal/model"
+	"github.com/lieycn/signal-hub/internal/services"
 	"github.com/xframe-go/x/responses"
 	"github.com/xframe-go/x/x"
 	"golang.org/x/sync/errgroup"
