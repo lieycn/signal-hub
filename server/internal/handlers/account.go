@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"context"
+
 	"github.com/labstack/echo/v5"
 	"github.com/lieywe/msghub/internal/api"
 	"github.com/lieywe/msghub/internal/model"
@@ -52,7 +54,7 @@ func (a *Account) Create(c *echo.Context) error {
 			return
 		}
 
-		if _, err = driver.SyncMessage(ctx, account); err != nil {
+		if _, err = driver.SyncMessage(context.Background(), account); err != nil {
 			x.Logger().Error(err)
 			return
 		}
