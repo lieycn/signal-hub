@@ -10,6 +10,10 @@ import { defineConfig } from "vite"
 import solid from "vite-plugin-solid"
 
 export default defineConfig({
+	build: {
+		outDir: "../server/public/static",
+		emptyOutDir: true,
+	},
 	resolve: {
 		alias: {
 			"@": fileURLToPath(new URL("./src", import.meta.url)),

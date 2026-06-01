@@ -22,7 +22,7 @@ var ServeCmd = &cobra.Command{
 			stop()
 			<-ctx.Done()
 		})
-		
+
 		go x.Server().Run(ctx)
 
 		x.Wait()
