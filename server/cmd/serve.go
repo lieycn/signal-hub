@@ -2,17 +2,28 @@ package cmd
 
 import (
 	"context"
+	"errors"
+	"fmt"
+	"os"
 
 	"github.com/lieywe/msghub/internal/config"
 	"github.com/lieywe/msghub/internal/routes"
 	"github.com/spf13/cobra"
+	"github.com/xframe-go/x/env"
 	"github.com/xframe-go/x/x"
 )
 
 var ServeCmd = &cobra.Command{
 	Use: "serve",
 	Run: func(cmd *cobra.Command, args []string) {
+		db := env.String("DB_DATABASE", "signal-hub")
+		_, err := os.Stat(fmt.Sprintf("%s.db", db))
+
 		config.Register()
+
+		if errors.Is(err, os.ErrNotExist) {
+			install()
+		}
 
 		routes.Register()
 

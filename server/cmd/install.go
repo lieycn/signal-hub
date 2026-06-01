@@ -10,21 +10,23 @@ import (
 var InstallCmd = &cobra.Command{
 	Use: "install",
 	Run: func(cmd *cobra.Command, args []string) {
-
 		config.Register()
-
-		models := []any{
-			model.Account{},
-			model.Message{},
-			model.Member{},
-		}
-
-		err := x.DB().Migrator().AutoMigrate(models...)
-		if err != nil {
-			x.Logger().Error(err)
-			return
-		}
-
-		x.Logger().Info("Migration complete")
+		install()
 	},
+}
+
+func install() {
+	models := []any{
+		model.Account{},
+		model.Message{},
+		model.Member{},
+	}
+
+	err := x.DB().Migrator().AutoMigrate(models...)
+	if err != nil {
+		x.Logger().Error(err)
+		return
+	}
+
+	x.Logger().Info("Migration complete")
 }
