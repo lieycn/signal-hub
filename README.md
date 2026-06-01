@@ -36,7 +36,7 @@
 
 ## 📦 快速开始
 
-下载 release 二进制，执行 `./signal-hub-darwin-arm64 serve` 一键启动，然后访问 `http://localhost:8080`
+下载 [release](https://github.com/lieycn/signal-hub/releases) 二进制，执行 `./signal-hub-darwin-arm64 serve` 一键启动，然后访问 `http://localhost:8080`
 
 ### 前置要求
 
